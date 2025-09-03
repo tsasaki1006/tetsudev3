@@ -25,10 +25,11 @@ export async function addContribution(formData: FormData) {
     if (fileContent) {
         contributions = JSON.parse(fileContent);
     }
-  } catch (error) {
+  } catch (err) {
     // If the file doesn't exist, we'll create it with the new contribution
+    const error = err as { code?: string };
     if (error.code !== 'ENOENT') {
-      console.error(error);
+      console.error(err);
       // Depending on the error, you might want to return an error state
       return;
     }
