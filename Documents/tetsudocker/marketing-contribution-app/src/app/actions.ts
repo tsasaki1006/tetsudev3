@@ -8,7 +8,7 @@ import { Contribution } from '@/types';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/contributions.json');
 
-export async function addContribution(formData: FormData) {
+export async function addContribution(prevState: any, formData: FormData) {
   const newContribution = {
     id: crypto.randomUUID(),
     date: formData.get('date') as string,

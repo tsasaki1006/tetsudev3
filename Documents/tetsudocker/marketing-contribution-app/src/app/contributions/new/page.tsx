@@ -19,7 +19,7 @@ function SubmitButton() {
 }
 
 export default function NewContributionPage() {
-  const [state, formAction] = useFormState(addContribution, null);
+  const [_state, formAction] = useFormState(addContribution, null);
 
   return (
     <div className="min-h-screen bg-gray-50">
