@@ -12,7 +12,7 @@ export default function Home() {
             マーケティング課貢献サイト
           </h1>
           <p className="mt-2 text-neon-magenta text-sm">
-            // TEAM CONTRIBUTION VISUALIZER //
+            {/* // TEAM CONTRIBUTION VISUALIZER // */}
           </p>
         </header>
 
