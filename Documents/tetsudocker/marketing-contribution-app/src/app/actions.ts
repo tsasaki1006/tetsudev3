@@ -3,6 +3,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { Contribution } from '@/types';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/contributions.json');
