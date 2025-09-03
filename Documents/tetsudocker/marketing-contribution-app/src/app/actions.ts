@@ -8,7 +8,12 @@ import { Contribution } from '@/types';
 
 const dataFilePath = path.join(process.cwd(), 'src/data/contributions.json');
 
-export async function addContribution(prevState: any, formData: FormData) {
+export type FormState = {
+    message: string;
+    errors?: string[];
+} | null;
+
+export async function addContribution(prevState: FormState, formData: FormData): Promise<FormState> {
   const newContribution = {
     id: crypto.randomUUID(),
     date: formData.get('date') as string,
@@ -19,20 +24,25 @@ export async function addContribution(prevState: any, formData: FormData) {
     createdAt: Date.now(),
   };
 
+  // Basic validation
+  if (!newContribution.date || !newContribution.member || !newContribution.notes) {
+    return {
+        message: 'Failed to create contribution. Please fill out all fields.',
+    }
+  }
+
+
   let contributions: Contribution[] = [];
   try {
     const fileContent = await fs.readFile(dataFilePath, 'utf-8');
-    // Handle case where file is empty
     if (fileContent) {
         contributions = JSON.parse(fileContent);
     }
   } catch (err) {
-    // If the file doesn't exist, we'll create it with the new contribution
     const error = err as { code?: string };
     if (error.code !== 'ENOENT') {
-      console.error(err);
-      // Depending on the error, you might want to return an error state
-      return;
+        console.error(err);
+        return { message: 'Failed to read data file.' };
     }
   }
 
@@ -42,8 +52,7 @@ export async function addContribution(prevState: any, formData: FormData) {
     await fs.writeFile(dataFilePath, JSON.stringify(contributions, null, 2));
   } catch (error) {
     console.error(error);
-    // Handle write error
-    return;
+    return { message: 'Failed to write data file.' };
   }
 
   revalidatePath('/');
